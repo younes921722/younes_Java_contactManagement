@@ -19,6 +19,7 @@ public class Main {
         System.out.println("3. delete a contact");
         System.out.println("4. Update a contact");
         System.out.println("5. Search for contact by name");
+        System.out.println("6. Search for contact by first or second number");
         System.out.println("0. Exit");
     }
     public static void main(String[] args) throws Exception {
@@ -146,7 +147,17 @@ public class Main {
                     }catch (Exception ex){
                         System.out.println(ex.getMessage());
                     }
-
+                    break;
+                case 6:
+                    System.out.println("Enter the first or second phone number: ");
+                    String fNumber = sc.nextLine();
+                    Contact nContact = contactManager.findContactByNumber(fNumber);
+                    if (nContact != null){
+                        View.showData(nContact);
+                    }
+                    else {
+                        System.out.println("The number not found");
+                    }
 
                     break;
                 case 0:

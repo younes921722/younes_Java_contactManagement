@@ -29,9 +29,10 @@ public class ContactManager {
     }
 
     public  Contact findContactByName(String fname, String lname) throws DataBaseException{
-        Contact contact = contactDao.findContactByName(fname,lname);
-        return contact;
-
+        return contactDao.findContactByName(fname,lname);
+    }
+    public Contact findContactByNumber(String pNumber) throws DataBaseException{
+        return contactDao.findContactByNumber(pNumber);
     }
 
     public List<Contact> getAll() throws DataBaseException {

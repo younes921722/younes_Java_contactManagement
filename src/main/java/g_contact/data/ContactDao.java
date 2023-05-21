@@ -123,8 +123,7 @@ public class ContactDao {
         }
     }
 
-
-    // Find name with name
+    // Find contact with name
     public Contact findContactByName(String fname, String lname) throws DataBaseException {
         List<Contact> list = new ArrayList<>();
         try{
@@ -151,6 +150,36 @@ public class ContactDao {
             return null;
         }
         return list.get(0);
+    }
+
+    // Find contact by personal or professional phone number
+    public Contact findContactByNumber(String pNumber) throws DataBaseException{
+        List<Contact> list = new ArrayList<>();
+        try{
+            c = DbConnection.getInstance();
+            query = "SELECT * FROM Contact WHERE tele1 = ? or  tele2 = ?";
+            pstm = c.prepareStatement(query);
+            pstm.setString(1,pNumber);
+            pstm.setString(2,pNumber);
+            ResultSet result = pstm.executeQuery();
+
+            while (result.next()){
+                list.add(resultToContact(result));
+            }
+
+            result.close();
+        }catch (SQLException ex){
+            // tracer l'erreur
+            looger.error("Error caused by :",ex);
+
+            // throw error
+            throw new DataBaseException(ex);
+        }
+        if(list.isEmpty()){
+            return null;
+        }
+        return list.get(0);
+
     }
 
 }
