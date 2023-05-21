@@ -6,7 +6,6 @@ import g_contact.data.DataBaseException;
 import g_contact.data.DataBaseInstaller;
 import org.apache.log4j.Logger;
 
-import java.util.List;
 import java.util.Scanner;
 
 
@@ -75,11 +74,7 @@ public class Main {
                                 ,address,Email_per,Email_pro,gender));
                         System.out.println("The contact added successfully");
                         // We display the contact list
-                        List<Contact> contactList = contactManager.getAll();
-                        for (Contact contact:contactList){
-                            System.out.println("First name: "+contact.getNom()+"-- Last name: "+contact.getPrenom()+"-- Phone1: "+contact.getTelephone1());
-
-                        }
+                        View.showData(contactManager);
                     }catch (DataBaseException ex){
                         // show an error if there is Db trouble
                         System.err.println(ex.getMessage());
@@ -141,6 +136,18 @@ public class Main {
 
                     break;
                 case 5:
+                    try {
+                        System.out.println("Enter the contact first name: ");
+                        String Ufname2 = sc.nextLine();
+                        System.out.println("Enter the contact last name: ");
+                        String Ulname2 = sc.nextLine();
+                        Contact uContact = contactManager.findContactByName(Ufname2, Ulname2);
+                        View.showData(uContact);
+                    }catch (Exception ex){
+                        System.out.println(ex.getMessage());
+                    }
+
+
                     break;
                 case 0:
                     System.exit(-1);

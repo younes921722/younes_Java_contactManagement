@@ -61,7 +61,7 @@ public class View {
 
     public static void showData(ContactManager contactManager){
         try {
-            List<String> headers = Arrays.asList("id","Nom","Prenom","Phone1","Phone2","Address","Personal email","Por email","Gender");
+            List<String> headers = Arrays.asList("id","First name","Last nom","Phone1","Phone2","Address","Personal email","Professional email","Gender");
             List<List<String>> data = new ArrayList<>();
             List<Contact> contactList = contactManager.getAll();
             for(Contact contact:contactList){
@@ -73,6 +73,14 @@ public class View {
         }catch (DataBaseException ex){
             System.out.println(ex.getMessage());
         }
+    }
+    public static void showData(Contact contact){
+
+            List<String> headers = Arrays.asList("id","First name","Last nom","Phone1","Phone2","Address","Personal email","Professional email","Gender");
+            List<List<String>> data = new ArrayList<>();
+            data.add(Arrays.asList(String.valueOf(contact.getId()),contact.getNom(),contact.getPrenom(),contact.getTelephone1(),contact.getTelephone2(),contact.getAdresse(),contact.getPersonnel(),contact.getProfessional(),contact.getGenre()));
+            View.tableView(headers,data);
+
     }
 
     public static boolean isContactExist(ContactManager contactManager, String fname, String lname) throws DataBaseException {
