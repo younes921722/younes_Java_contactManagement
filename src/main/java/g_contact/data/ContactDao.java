@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+//Todo : add all input constraints
 /**
  * Implements CRUD operations for the BO Theme
  */
@@ -142,7 +142,6 @@ public class ContactDao {
         }catch (SQLException ex){
             // tracer l'erreur
             looger.error("Error caused by :",ex);
-
             // throw error
             throw new DataBaseException(ex);
         }
