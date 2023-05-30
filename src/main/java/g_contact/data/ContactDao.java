@@ -3,9 +3,13 @@ package g_contact.data;
 import g_contact.bo.Contact;
 import org.apache.log4j.Logger;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 //Todo : add all input constraints
 /**
  * Implements CRUD operations for the BO Theme
@@ -16,10 +20,12 @@ public class ContactDao {
     private String query;
     private PreparedStatement pstm;
 
+    private static int generatedId =-1 ;
+
 
     private Logger looger = Logger.getLogger(getClass());
+
     public void create(Contact contact) throws DataBaseException {
-        int generatedId =-1 ;
 
         try{
             // Get the connexion to database
@@ -48,6 +54,7 @@ public class ContactDao {
             }
 
         }catch (SQLException ex){
+            generatedId--;
             // tracing the error
             looger.error("Error caused by :",ex);
             // raise error
@@ -67,6 +74,7 @@ public class ContactDao {
             while(result.next()){
                 contactList.add(resultToContact(result));
             }
+            generatedId--;
             result.close();
         }catch (SQLException ex){
             // tracer l'erreur
@@ -179,6 +187,30 @@ public class ContactDao {
         }
         return list.get(0);
 
+    }
+
+
+    // Inpute validation functions:
+    public static boolean isName(String value) {
+        // A name should consist of alphabets and may contain spaces or hyphens
+        String regex = "^[A-Za-z -]+$";
+        return Pattern.matches(regex, value);
+    }
+
+    public static boolean isValidEmail(String value) {
+        // Simple email validation using regex
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        return Pattern.matches(regex, value);
+    }
+
+    public static boolean isValidPhoneNumber(String value) {
+        // Phone number validation allowing digits, dashes, and optional country code
+        String regex = "^[0][567]\\d{8}$";
+        return Pattern.matches(regex, value);
+    }
+
+    public static boolean isGender(String value){
+        return (value.equals("man") || value.equals("woman"));
     }
 
 }

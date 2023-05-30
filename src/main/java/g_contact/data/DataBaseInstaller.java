@@ -30,6 +30,11 @@ public class DataBaseInstaller {
                   CONSTRAINT Email_personnel_uk UNIQUE (Email_personnel),
                   CONSTRAINT Email_professionnel_uk UNIQUE (Email_professionnel)                       
                 );
+                
+                CREATE TABLE `group`(
+                group_name VARCHAR(255),
+                contact_id bigint
+                );
                 """;
 //        Statement stm = connection.createStatement();
         PreparedStatement stm = connection.prepareStatement(sql);

@@ -1,7 +1,9 @@
 package g_contact.ihm;
 
 import g_contact.bll.ContactManager;
+import g_contact.bll.GroupManager;
 import g_contact.bo.Contact;
+import g_contact.bo.Group;
 import g_contact.data.DataBaseException;
 
 import java.util.ArrayList;
@@ -83,6 +85,21 @@ public class View {
 
     }
 
+    public static void showGroupData(GroupManager groupManager){
+        try {
+            List<String> headers = Arrays.asList("Group_name","contact_id");
+            List<List<String>> data = new ArrayList<>();
+            List<Group> groupList = groupManager.getAll();
+            for(Group group:groupList){
+                data.add(Arrays.asList(group.getName(),String.valueOf(group.getContact_id())));
+            }
+            View.tableView(headers,data);
+
+        }catch (DataBaseException ex){
+            System.out.println(ex.getMessage());
+        }
+    }
+
     public static boolean isContactExist(ContactManager contactManager, String fname, String lname) throws DataBaseException {
         // Checks if the contact already exist to raise an error message if it is already exist
         if (contactManager.findContactByName(fname,lname) != null){
@@ -91,4 +108,6 @@ public class View {
         }
         return false;
     }
+
+
 }

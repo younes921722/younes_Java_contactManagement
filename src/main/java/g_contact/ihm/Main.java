@@ -1,7 +1,10 @@
 package g_contact.ihm;
 
 import g_contact.bll.ContactManager;
+import g_contact.bll.GroupManager;
 import g_contact.bo.Contact;
+import g_contact.bo.Group;
+import g_contact.data.ContactDao;
 import g_contact.data.DataBaseException;
 import g_contact.data.DataBaseInstaller;
 import org.apache.log4j.Logger;
@@ -20,11 +23,15 @@ public class Main {
         System.out.println("4. Update a contact");
         System.out.println("5. Search for contact by name");
         System.out.println("6. Search for contact by first or second number");
+        System.out.println("7. Create new contact");
         System.out.println("0. Exit");
     }
     public static void main(String[] args) throws Exception {
         // create a ContactManager instance
         ContactManager contactManager = new ContactManager();
+
+        GroupManager groupManager = new GroupManager();
+
 
         try {
             if (!DataBaseInstaller.checkIfAlreadyInstalled()){
@@ -33,6 +40,7 @@ public class Main {
             }
         }catch (Exception ex){
             // We raise an error message if the tables was not created successfully
+            logger.error(ex.getMessage());
             System.err.println("Error while creating the database, see log.txt file for details");
             // we stop the application with an error code
             System.exit(-1);
@@ -46,29 +54,61 @@ public class Main {
             System.out.println("Enter your choice :");
             int choice = sc.nextInt();
             sc.nextLine(); // to avoid jump by nexInt
+            boolean bol = true;
             switch (choice){
                 case 1:
                     System.out.println("Enter the contact first name: ");
                     // get the name
                     String fname = sc.nextLine();
+                    // We check if the name is valid
+                    if(!ContactDao.isName(fname)){
+                        System.out.println("Not valid name!");
+                        break;
+                    }
                     System.out.println("Enter the contact last name: ");
                     String lname = sc.nextLine();
+                    if (!ContactDao.isName(lname)){
+                        System.out.println("Not valid name!");
+                        break;
+                    }
                     // Checks if the contact already exist to raise an error message if it is already exist
                     if(View.isContactExist(contactManager,fname,lname)){
                         break;
                     }
                     System.out.println("Enter the contact phone1: ");
                     String phone1 = sc.nextLine();
+                    if(!ContactDao.isValidPhoneNumber(phone1)){
+                        System.out.println("phone not valid");
+                        break;
+                    }
                     System.out.println("Enter the contact phone2: ");
                     String phone2 = sc.nextLine();
+                    if(!ContactDao.isValidPhoneNumber(phone2)){
+                        System.out.println("phone not valid");
+                        break;
+                    }
                     System.out.println("Enter the contact address: ");
                     String address = sc.nextLine();
                     System.out.println("Enter the contact personnel email: ");
                     String Email_per = sc.nextLine();
+                    // We check if the email is valid
+                    if(!ContactDao.isValidEmail(Email_per)){
+                        System.out.println("Email not valid");
+                        break;
+                    }
                     System.out.println("Enter the contact professional email: ");
                     String Email_pro = sc.nextLine();
+                    // We check if the email is valid
+                    if(!ContactDao.isValidEmail(Email_pro)){
+                        System.out.println("Email not valid");
+                        break;
+                    }
                     System.out.println("Enter the contact gender: ");
                     String gender = sc.nextLine();
+                    if(!ContactDao.isGender(gender)){
+                        System.out.println("try enter to input valid gender(man or woman)");
+
+                    }
                     try {
                         // We build the contact object then save it in the dataBase
                         contactManager.addContact(new Contact(fname,lname,phone1,phone2
@@ -160,13 +200,25 @@ public class Main {
                     }
 
                     break;
+                case 7:
+                    View.showGroupData(groupManager);
+                    System.out.println("Enter the group name: ");
+                    String gName = sc.nextLine();
+                    System.out.println("Enter the contact number: ");
+                    String cNumber = sc.nextLine();
+                    if(contactManager.findContactByNumber(cNumber) == null){
+                        System.err.println("The number not found try to create a contact with this number!");
+                        break;
+                    }
+                    Contact contact = contactManager.findContactByNumber(cNumber);
+                    groupManager.addGroup(new Group(gName),contact);
+
+                    break;
+
                 case 0:
                     System.exit(-1);
 
             }
-
         }
-
-
     }
 }
