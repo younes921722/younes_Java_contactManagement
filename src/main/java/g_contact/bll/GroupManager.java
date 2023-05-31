@@ -14,7 +14,7 @@ public class GroupManager {
 
     public void addGroup(Group group, Contact contact) throws DataBaseException, Exception {
         // we check if the contact already exists in the group
-        Group contactInGroup = groupDao.ContactExists(contact);
+        Group contactInGroup = groupDao.ContactExists(contact, group);
         if(contactInGroup != null){
             System.err.println("The contact already exist in the group !");
         }
@@ -25,6 +25,16 @@ public class GroupManager {
 
     }
 
+    public void deleteGroup(String gName) throws DataBaseException{
+        groupDao.deleteGroup(gName);
+    }
+
+    public Group isGroupExists(Group group) throws DataBaseException{
+        return groupDao.isGroupExists(group);
+    }
+    public Group findGroupByName(String gName) throws DataBaseException{
+        return groupDao.findGroupByName(gName);
+    }
     public List<Group> getAll() throws DataBaseException{
         return groupDao.getAll();
     }

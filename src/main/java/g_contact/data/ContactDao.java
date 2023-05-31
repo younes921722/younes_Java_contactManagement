@@ -92,7 +92,6 @@ public class ContactDao {
     }
 
     public void delete(int id) throws DataBaseException {
-
         try {
             // Get the connexion to database
             c = DbConnection.getInstance();

@@ -23,7 +23,9 @@ public class Main {
         System.out.println("4. Update a contact");
         System.out.println("5. Search for contact by name");
         System.out.println("6. Search for contact by first or second number");
-        System.out.println("7. Create new contact");
+        System.out.println("7. Create new group");
+        System.out.println("8. Delete a group");
+        System.out.println("9. Show a group");
         System.out.println("0. Exit");
     }
     public static void main(String[] args) throws Exception {
@@ -214,6 +216,22 @@ public class Main {
                     groupManager.addGroup(new Group(gName),contact);
 
                     break;
+                case 8:
+                    View.showGroupData(groupManager);
+                    System.out.println("Enter the group name: ");
+                    String gDName = sc.nextLine();
+                    if(groupManager.findGroupByName(gDName) == null){
+                        System.err.println("the group not exists");
+                        break;
+                    }
+                    groupManager.deleteGroup(gDName);
+                    System.out.println("the group deleted successfully");
+                    break;
+                case 9:
+                    System.out.println("Enter the group name: ");
+                    String gSName = sc.nextLine();
+
+
 
                 case 0:
                     System.exit(-1);
